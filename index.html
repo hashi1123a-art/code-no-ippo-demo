@@ -1,0 +1,11 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>コードの一歩</title>
+<style>
+body{font:16px system-ui,sans-serif;background:#10141c;color:#edf1f7;margin:0}main{max-width:760px;margin:auto;padding:32px 20px}h1{margin-bottom:0}p{line-height:1.6}details,article{padding:14px;border:1px solid #3b475b;border-radius:8px;margin:12px 0}summary{cursor:pointer}pre{white-space:pre-wrap;background:#1c2432;padding:14px;border-radius:6px}select,input,button{font:inherit;padding:8px;color:inherit;background:#222d3d;border:1px solid #516079;border-radius:6px}button{cursor:pointer}button:disabled{opacity:.5}#editor{height:300px;margin:10px 0}textarea#editor{box-sizing:border-box;width:100%;background:#1c2432;color:white;font:14px monospace}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.grid label{display:grid;gap:4px}.pass{color:#8ee4ac}.fail{color:#ffadad}.notice{color:#f9d689}
+</style>
+<main><h1>コードの一歩</h1><p>「分かるけど書けない」から、自分で書けるへ。</p>
+<details><summary>変数と関数の違い</summary><p>変数は値を覚える名前です。関数は処理をまとめたもので、引数を受け取ったり、結果を返したりできます。</p></details>
+<h2>問題文</h2><label>取り組む問題 <select id="problem"></select></label><p id="description"></p>
+<details><summary>ヒントを見る</summary><label>どこで困っていますか？ <select id="hint-topic"><option value="start">何から書けばいいか分からない</option><option value="shape">関数の形が分からない</option></select></label><p><label><input type="checkbox" id="hint-toggle">考え方のヒントを表示する</label></p><p id="hint" hidden></p></details>
+<details><summary>関数全体の穴埋めで練習する</summary><pre id="template"></pre><div class="grid" id="blanks"></div><p><button id="grade">穴埋め問題を採点する</button></p><div id="practice" aria-live="polite"></div></details>
+<h2>関数を書く</h2><p id="instructions"></p><div id="editor" aria-label="Cコードの入力欄"></div><button id="test">テストする</button><div id="results" aria-live="polite"></div></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.36.5/ace.min.js"></script><script type="module" src="/app.js"></script></html>
