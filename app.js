@@ -13,14 +13,14 @@ if (window.ace) {
   const aceEditor = window.ace.edit(editor, { mode: 'ace/mode/c_cpp', theme: 'ace/theme/monokai' });
   aceEditor.textInput.getElement().setAttribute('aria-label', 'Cコードの入力欄');
   setCode = (value) => aceEditor.setValue(value, -1);
-  aceEditor.on('change', () => { states[id].code = aceEditor.getValue(); showResults(); });
+  aceEditor.on('change', () => { states[id].code = aceEditor.getValue();  });
 } else {
   const textarea = document.createElement('textarea');
   textarea.id = editor.id;
   textarea.setAttribute('aria-label', 'Cコードの入力欄');
   editor.replaceWith(textarea);
   setCode = (value) => { textarea.value = value; };
-  textarea.oninput = () => { states[id].code = textarea.value; showResults(); };
+  textarea.oninput = () => { states[id].code = textarea.value;  };
 }
 
 function add(parent, tag, content, className = '') {
@@ -60,30 +60,6 @@ function showPractice() {
   add(box, 'p', count === fields.length ? '全問正解です！' : `${fields.length}問中${count}問正解です。`);
 }
 
-function showResults() {
-  const state = states[id];
-  const box = get('results');
-  box.replaceChildren();
-  get('test').disabled = Boolean(state.pending);
-  if (state.pending) add(box, 'p', 'テスト中…');
-  if (state.warning) add(box, 'p', state.warning, 'notice');
-  if (!state.report) return;
-  if (state.code !== state.testedCode) add(box, 'p', 'コードが変更されています。もう一度テストしてください。', 'notice');
-  const { compileError, error, results } = state.report;
-  if (compileError || error) return add(box, 'pre', compileError ? 'コンパイル失敗\n' + compileError : error, 'fail');
-  add(box, 'p', 'コンパイル成功');
-  results.forEach((result, i) => {
-    const card = add(box, 'article', '');
-    add(card, 'strong', `テスト${i + 1}（入力 ${result.input}）${result.passed ? '成功' : '失敗'}`, result.passed ? 'pass' : 'fail');
-    if (!result.passed) {
-      add(card, 'p', '期待した出力：' + result.expected);
-      add(card, 'pre', result.runtimeError || '実際の出力：' + (result.actual || '（空）'));
-      if (!result.runtimeError) add(card, 'p', result.hint);
-    }
-  });
-  if (results.every((result) => result.passed)) add(box, 'strong', 'すべてのテストに成功しました。', 'pass');
-}
-
 function showProblem() {
   const problem = problems[id];
   get('description').textContent = problem.description;
@@ -102,7 +78,7 @@ function showProblem() {
   });
   setCode(states[id].code);
   showPractice();
-  showResults();
+  
 }
 
 get('grade').onclick = () => {
@@ -110,29 +86,6 @@ get('grade').onclick = () => {
   state.unanswered = state.answers.flatMap((answer, i) => answer.trim() ? [] : [i + 1]);
   if (!state.unanswered.length) state.graded = state.answers.slice();
   showPractice();
-};
-get('test').onclick = async () => {
-  const problemId = id;
-  const state = states[problemId];
-  const code = state.code;
-  state.warning = code.trim() ? '' : 'コードを入力してください。';
-  if (state.warning) return showResults();
-  state.pending = true;
-  state.testedCode = code;
-  state.report = null;
-  showResults();
-  try {
-    const response = await fetch('/test', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: problemId, code })
-    });
-    state.report = await response.json();
-  } catch {
-    state.report = { error: '採点サーバーに接続できませんでした。' };
-  } finally {
-    state.pending = false;
-    showResults();
-  }
 };
 selector.onchange = () => { id = selector.value; showProblem(); };
 get('hint-toggle').onchange = showHint;

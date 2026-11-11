@@ -7,5 +7,5 @@ body{font:16px system-ui,sans-serif;background:#10141c;color:#edf1f7;margin:0}ma
 <h2>問題文</h2><label>取り組む問題 <select id="problem"></select></label><p id="description"></p>
 <details><summary>ヒントを見る</summary><label>どこで困っていますか？ <select id="hint-topic"><option value="start">何から書けばいいか分からない</option><option value="shape">関数の形が分からない</option></select></label><p><label><input type="checkbox" id="hint-toggle">考え方のヒントを表示する</label></p><p id="hint" hidden></p></details>
 <details><summary>関数全体の穴埋めで練習する</summary><pre id="template"></pre><div class="grid" id="blanks"></div><p><button id="grade">穴埋め問題を採点する</button></p><div id="practice" aria-live="polite"></div></details>
-<h2>関数を書く</h2><p id="instructions"></p><div id="editor" aria-label="Cコードの入力欄"></div><button id="test">テストする</button><div id="results" aria-live="polite"></div></main>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.36.5/ace.min.js"></script><script type="module" src="/app.js"></script></html>
+<h2>関数を書く</h2><p id="instructions"></p><div id="editor" aria-label="Cコードの入力欄"></div><p>公開デモでは、問題・ヒント・穴埋め採点・Cコードの入力を試せます。Cコードの実行とテストはローカル版で利用できます。</p></main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.36.5/ace.min.js"></script><script type="module" src="./app.js"></script></html>
